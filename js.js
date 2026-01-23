@@ -6,5 +6,5 @@ const funcs = {
 }
 
 function operate(a, b, op) {
-    funcs[op](a, b);
+    return funcs[op](a, b);
 }
