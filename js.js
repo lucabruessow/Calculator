@@ -12,6 +12,20 @@ function operate(a, b, op) {
     return funcs[op](+a, +b);
 }
 
+function updateDisplay(phase, numOne, operator = "", numTwo = "") {
+    switch(phase) {
+        case "enteringFirst":
+            display.textContent = numOne;
+            break;
+        case "operatorSet":
+            display.textContent = `${numOne} ${operator}`;
+            break;
+        case "enteringSecond":
+            display.textContent = `${numOne} ${operator} ${numTwo}`;
+    }
+}
+
+// using closure to not use global variables
 function handlePointerDown() {
     // using an object to save the different variables and the phase of my program
     let state = {
