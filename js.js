@@ -12,7 +12,7 @@ function operate(a, b, op) {
     return funcs[op](+a, +b);
 }
 
-function updateDisplay(phase, numOne, operator = "", numTwo = "") {
+function updateDisplay(phase, numOne = "", operator = "", numTwo = "", result = "") {
     switch(phase) {
         case "enteringFirst":
             display.textContent = numOne;
@@ -22,17 +22,22 @@ function updateDisplay(phase, numOne, operator = "", numTwo = "") {
             break;
         case "enteringSecond":
             display.textContent = `${numOne} ${operator} ${numTwo}`;
+            break;
+        case "showingResult":
+            console.log(result);
+            display.textContent = result;
     }
 }
 
-// using closure to not use global variables
+// using closure to not lose the values of the variables
 function handlePointerDown() {
     // using an object to save the different variables and the phase of my program
     let state = {
         first: "",
         second: "",
         op: null,
-        phase: "enteringFirst" // "operatorSet", "enteringSecond", "showingResult"
+        result: null,
+        phase: "enteringFirst", // "operatorSet", "enteringSecond", "showingResult"
     }
 
     return function(event) {
@@ -52,6 +57,12 @@ function handlePointerDown() {
         if (state.phase === "enteringSecond" && tar.matches(".calc__button--number")) {
             state.second += content;
             updateDisplay(state.phase, state.first, state.op, state.second);
+        }
+        if (state.phase === "enteringSecond" && tar.matches(".calc__button--equals")) {
+            state.result = operate(state.first, state.second, state.op);
+            console.log(state.result);
+            state.phase = "showingResult";
+            updateDisplay(state.phase, state.first, state.operator, state.second, state.result);
         }
     }
 }
