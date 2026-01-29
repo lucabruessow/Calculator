@@ -13,22 +13,31 @@ function operate(a, b, op) {
 }
 
 function handlePointerDown() {
-    let var1 = "";
-    let var2 = "";
-    let op = null;
+    // using an object to save the different variables and the phase of my program
+    let state = {
+        first: "",
+        second: "",
+        op: null,
+        phase: "enteringFirst" // "operatorSet", "enteringSecond", "showingResult"
+    }
 
     return function(event) {
         const tar = event.target;
         const content = event.target.textContent;
 
-        if (op === null && tar.matches(".calc__button--number")) { 
-            var1 += content;
+        if (state.phase === "enteringFirst" && tar.matches(".calc__button--number")) { 
+            state.first += content;
+            updateDisplay(state.phase, state.first);
         }
-        if (op === null && tar.matches(".calc__button--operator")) {
-            op = content;
+        if (state.phase === "enteringFirst" && tar.matches(".calc__button--operator")) {
+            state.op = content;
+            state.phase = "operatorSet";
+            updateDisplay(state.phase, state.first, state.op);
+            state.phase = "enteringSecond";
         }
-        if (op !== null && tar.matches(".calc__button--number")) {
-            var2 += content;
+        if (state.phase === "enteringSecond" && tar.matches(".calc__button--number")) {
+            state.second += content;
+            updateDisplay(state.phase, state.first, state.op, state.second);
         }
     }
 }
