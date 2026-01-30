@@ -44,27 +44,37 @@ function handlePointerDown() {
         const tar = event.target;
         const content = event.target.textContent;
 
-        if (state.phase === "enteringFirst" && tar.matches(".calc__button--number")) { 
-            state.first += content;
-            updateDisplay(state.phase, state.first);
-        }
-        if (state.phase === "enteringFirst" && tar.matches(".calc__button--operator")) {
-            state.op = content;
-            state.phase = "operatorSet";
-            updateDisplay(state.phase, state.first, state.op);
-            state.phase = "enteringSecond";
-        }
-        if (state.phase === "enteringSecond" && tar.matches(".calc__button--number")) {
-            state.second += content;
-            updateDisplay(state.phase, state.first, state.op, state.second);
-        }
-        if (state.phase === "enteringSecond" && tar.matches(".calc__button--equals")) {
-            state.result = operate(state.first, state.second, state.op);
-            console.log(state.result);
-            state.phase = "showingResult";
-            updateDisplay(state.phase, state.first, state.operator, state.second, state.result);
+        switch (state.phase) {
+            
+            // catch all possibilities for different phases
+            case "enteringFirst":
+                if (tar.matches(".calc__button--number")) { 
+                    state.first += content;
+                    updateDisplay(state.phase, state.first);
+                    break;
+                }
+                if (tar.matches(".calc__button--operator")) {
+                    state.op = content;
+                    state.phase = "operatorSet";
+                    updateDisplay(state.phase, state.first, state.op);
+                    state.phase = "enteringSecond";
+                    break;
+                }
+
+            case "enteringSecond":
+                if (tar.matches(".calc__button--number")) {
+                    state.second += content;
+                    updateDisplay(state.phase, state.first, state.op, state.second);
+                    break;
+                }
+                if (tar.matches(".calc__button--equals")) {
+                    state.result = operate(state.first, state.second, state.op);
+                    state.phase = "showingResult";
+                    updateDisplay(state.phase, state.first, state.operator, state.second, state.result);
+                }
         }
     }
 }
+
 
 buttons.addEventListener("pointerdown", handlePointerDown());
