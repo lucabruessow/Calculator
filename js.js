@@ -46,14 +46,14 @@ function handlePointerDown() {
 
         switch (state.phase) {
             
-            // catch all possibilities for different phases
+            // catch all possible buttons for different phases
             case "enteringFirst":
                 if (tar.matches(".calc__button--number")) { 
                     state.first += content;
                     updateDisplay(state.phase, state.first);
                     break;
                 }
-                if (tar.matches(".calc__button--operator")) {
+                else if (tar.matches(".calc__button--operator")) {
                     state.op = content;
                     state.phase = "operatorSet";
                     updateDisplay(state.phase, state.first, state.op);
@@ -67,10 +67,28 @@ function handlePointerDown() {
                     updateDisplay(state.phase, state.first, state.op, state.second);
                     break;
                 }
-                if (tar.matches(".calc__button--equals")) {
+                else if (tar.matches(".calc__button--equals")) {
                     state.result = operate(state.first, state.second, state.op);
                     state.phase = "showingResult";
                     updateDisplay(state.phase, state.first, state.operator, state.second, state.result);
+                    break;
+                }
+
+            case "showingResult":
+                if (tar.matches(".calc__button--number")) {
+                    state.first = content;
+                    state.second = "";
+                    state.op = null;
+                    state.phase = "enteringFirst";
+                    updateDisplay(state.phase, state.first);
+                }
+                else if (tar.matches(".calc__button--operator")) {
+                    state.first = operate(state.first, state.second, state.op);
+                    state.op = content;
+                    state.second = "";
+                    state.phase = "operatorSet";
+                    updateDisplay(state.phase, state.first, state.op);
+                    state.phase = "enteringSecond";
                 }
         }
     }
