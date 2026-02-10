@@ -78,6 +78,14 @@ function handlePointerDown() {
                     state.phase = "showingResult";
                     updateDisplay(state.phase, state.first, state.operator, state.second, state.result);
                 }
+                else if (tar.matches(".calc__button--operator")) {
+                    state.op = content;
+                    state.first = operate(state.first, state.second, state.op);
+                    state.second = "";
+                    state.phase = "operatorSet";
+                    updateDisplay(state.phase, state.first, state.op);
+                    console.log(state.phase);
+                }
                 break;
 
             case "showingResult":
