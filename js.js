@@ -58,6 +58,10 @@ function handlePointerDown() {
                     state.phase = "operatorSet";
                     updateDisplay(state.phase, state.first, state.op);
                 }
+                else if (tar.matches(".calc__button--comma") && !(state.first.includes("."))) {
+                    state.first += content;
+                    updateDisplay(state.phase, state.first);
+                }
                 break;
 
             case "operatorSet":
@@ -73,10 +77,14 @@ function handlePointerDown() {
                     state.second += content;
                     updateDisplay(state.phase, state.first, state.op, state.second);
                 }
+                else if (tar.matches(".calc__button--comma") && !(state.second.includes("."))) {
+                    state.second += content;
+                    updateDisplay(state.phase, state.first, state.op, state.second);
+                }
                 else if (tar.matches(".calc__button--equals")) {
                     state.result = operate(state.first, state.second, state.op);
                     state.phase = "showingResult";
-                    updateDisplay(state.phase, state.first, state.operator, state.second, state.result);
+                    updateDisplay(state.phase, state.first, state.op, state.second, state.result);
                 }
                 else if (tar.matches(".calc__button--operator")) {
                     state.op = content;
@@ -84,7 +92,6 @@ function handlePointerDown() {
                     state.second = "";
                     state.phase = "operatorSet";
                     updateDisplay(state.phase, state.first, state.op);
-                    console.log(state.phase);
                 }
                 break;
 
