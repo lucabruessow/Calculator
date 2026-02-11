@@ -31,7 +31,7 @@ function updateDisplay(phase, numOne = "", operator = "", numTwo = "", result = 
 
 // using closure to not lose the values of the variables
 function handlePointerDown() {
-    // using an object to save the different variables and the phase of my program
+    // using an object to save different variables and phase of my program
     let state = {
         first: "",
         second: "",
@@ -110,6 +110,17 @@ function handlePointerDown() {
                     state.phase = "operatorSet";
                     updateDisplay(state.phase, state.first, state.op);
                 }
+                break;
+        }
+        // catch clear button for all phases
+        if (tar.matches(".calc__button--clear")) {
+            console.log(state.first);
+            state.first = "";
+            state.second = "";
+            state.op = null;
+            state.result = null;
+            state.phase = "enteringFirst";
+            updateDisplay(state.phase, state.first);
         }
     }
 }
