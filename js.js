@@ -53,7 +53,7 @@ function handlePointerDown() {
                     updateDisplay(state.phase, state.first);
                 
                 }
-                else if (tar.matches(".calc__button--operator")) {
+                else if (tar.matches(".calc__button--operator") && state.first !== "") {
                     state.op = content;
                     state.phase = "operatorSet";
                     updateDisplay(state.phase, state.first, state.op);
