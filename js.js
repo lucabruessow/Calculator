@@ -62,6 +62,10 @@ function handlePointerDown() {
                     state.first += content;
                     updateDisplay(state.phase, state.first);
                 }
+                else if (tar.matches(".calc__button--delete")) {
+                    state.first = state.first.slice(0, -1);
+                    updateDisplay(state.phase, state.first);
+                }
                 break;
 
             case "operatorSet":
@@ -69,6 +73,11 @@ function handlePointerDown() {
                     state.second += content;
                     state.phase = "enteringSecond";
                     updateDisplay(state.phase, state.first, state.op, state.second);
+                }
+                else if (tar.matches(".calc__button--delete")) {
+                    state.op = null;
+                    state.phase = "enteringFirst";
+                    updateDisplay(state.phase, state.first);
                 }
                 break;
             
@@ -92,6 +101,13 @@ function handlePointerDown() {
                     state.second = "";
                     state.phase = "operatorSet";
                     updateDisplay(state.phase, state.first, state.op);
+                }
+                else if (tar.matches(".calc__button--delete")) {
+                    state.second = state.second.slice(0, -1);
+                    updateDisplay(state.phase, state.first, state.op, state.second);
+                    if (state.second === "") {
+                        state.phase = "operatorSet";
+                    }
                 }
                 break;
 
