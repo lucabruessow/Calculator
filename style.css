@@ -20,8 +20,8 @@
 
 .calc__buttons {
     --margin: 2px;
-    --quarter-margin: calc(25% - (var(--margin) * 5));
-    --half-margin: calc(50% - (var(--margin) * 3));
+    --four-button-basis: calc(25% - (var(--margin) * 5));
+    --two-button-basis: calc(50% - (var(--margin) * 3));
 
     display: flex;
     flex-wrap: wrap;
@@ -29,18 +29,18 @@
 }
 
 .calc__button {
-    flex: 1 0 var(--quarter-margin);
+    flex: 1 0 var(--four-button-basis);
     aspect-ratio: 1 /1;
     margin: var(--margin);
 }
 
 .calc__button--clear {
-    flex: 1 0 var(--half-margin);
+    flex: 1 0 var(--two-button-basis);
     aspect-ratio: auto;
 }
 
 .calc__button--delete {
-    flex: 1 0 var(--half-margin);
+    flex: 1 0 var(--two-button-basis);
     aspect-ratio: 2 / 1;
 }
 
