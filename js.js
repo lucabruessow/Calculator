@@ -24,8 +24,10 @@ function updateDisplay(phase, numOne = "", operator = "", numTwo = "", result = 
             display.textContent = `${numOne} ${operator} ${numTwo}`;
             break;
         case "showingResult":
-            console.log(result);
             display.textContent = result;
+            break;
+        case "dividingByZero":
+            display.textContent = "Error! Dividing by Zero. Enter another number.";
     }
 }
 
@@ -37,7 +39,7 @@ function handlePointerDown() {
         second: "",
         op: null,
         result: null,
-        phase: "enteringFirst", // "operatorSet", "enteringSecond", "showingResult"
+        phase: "enteringFirst", // "operatorSet", "enteringSecond", "showingResult", "dividingByZero"
     }
 
     return function(event) {
@@ -90,10 +92,22 @@ function handlePointerDown() {
                     state.second += content;
                     updateDisplay(state.phase, state.first, state.op, state.second);
                 }
+                else if (tar.matches(".calc__button--equals") && state.op === "/" && state.second === "0") {
+                    state.phase = "dividingByZero";
+                    updateDisplay(state.phase, state.first, state.op);
+                    state.second = "";
+                    state.phase = "enteringSecond";
+                }
                 else if (tar.matches(".calc__button--equals")) {
                     state.result = operate(state.first, state.second, state.op);
                     state.phase = "showingResult";
                     updateDisplay(state.phase, state.first, state.op, state.second, state.result);
+                }
+                else if (tar.matches(".calc__button--operator") && state.op === "/" && state.second === "0") {
+                    state.phase = "dividingByZero";
+                    updateDisplay(state.phase, state.first, state.op)
+                    state.second = "";
+                    state.phase = "enteringSecond";
                 }
                 else if (tar.matches(".calc__button--operator")) {
                     state.op = content;
@@ -130,7 +144,6 @@ function handlePointerDown() {
         }
         // catch clear button for all phases
         if (tar.matches(".calc__button--clear")) {
-            console.log(state.first);
             state.first = "";
             state.second = "";
             state.op = null;
